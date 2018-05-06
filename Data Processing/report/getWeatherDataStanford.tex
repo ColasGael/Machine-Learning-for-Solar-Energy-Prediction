@@ -1,0 +1,102 @@
+\documentclass[]{report}
+
+
+% Title Page
+\title{Get Weather Data : inputs}
+\author{Gael Colas}
+
+% to use url
+\usepackage{hyperref}
+
+\usepackage{graphicx}
+\usepackage{moreverb}
+
+\usepackage{mathexam}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+
+\begin{document}
+\section{Get Raw Data}
+
+	The first step was to get the raw weather data from the website : \url{http://www.ncdc.noaa.gov/orders/qclcd/}\\
+	
+	This website is hosted by the National Center for Environmental Information which is part of the National Oceanic and Atmospheric Administration (NOAA). It provides hourly weather measures from weather station all over the US. The data are available from zipfiles updated daily.\\
+	
+	Our goal was to get the weather data over the time period : 2008/12/21-2010/2/10.
+	This data will be the inputs of our dataset (weather features) where the data from the Y2E2 building of Stanford will be the output (solar panel energy production).\\
+	
+	To get an estimation of the weather conditions in Stanford (\emph{zip5 = 94305}), we located the \emph{n = 3} closest weather station :\\
+	
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		Key & Name & Distance (km) & City & State\\ \hline
+		23289 & Airport of Santa Clara County & 5.8 & Palo Alto & CA\\ \hline
+		23244 & Moffett Federal Field Airport & 10.4 & Mountain View & CA\\ \hline
+		93231 & San Carlos Airport & 12 & San Carlos & CA\\ \hline
+	\end{tabular}	
+	\newline
+	
+	To get the weather data from these 3 weather station, we used a GitHub program available here : \url{https://github.com/sborgeson/local-weather}.\\
+	
+	The data was captured using our Python program : \emph{getWeatherDataStanford.py}. These program use 2 functions from the GitHub Python files :
+	\begin{itemize}
+		\item [-] \emph{stationList(zip5,2009,01,n,preferredDistKm)} : this function output the details about the 3 closest weather stations.
+		\item [-] \emph{weatherMonths(zip5,start,end,hourly,subset,n,preferredDistKm)} : this function output a matrix of all the weather data examples for the 3 closest stations.\\
+	\end{itemize}
+	
+	Our Python program output a csv file (\emph{rawWeatherDataStanford.csv}) : the weather data examples are the rows of the csv file.\\	
+
+	We pre-selected \emph{$n=8$} weather features for the raw data :\\
+	
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		Key & Weather feature & Unit & Remark\\ \hline
+		4 & Sky condition & \% range & "CLR", "FEW", "SCT", "BKN", "OVC"\\ \hline
+		6 & Visibility & miles & \\ \hline
+		12 & Temperature & °C & "Dry Bulb" in the original files\\ \hline
+		20 & Dew point & °C & when vapor water starts to condensate\\ \hline
+		22 & Relative humidity & \%  & ratio of the partial to the equilibrium pressure of vapor water\\ \hline
+		24 & Wind speed & mph & \\ \hline
+		30 & Station pressure & inchHg & inch of mercure\\ \hline
+		42 & Altimeter & inchHg & altitude-pressure of the station\\ \hline		
+	\end{tabular}	
+	\newline
+	\end{center}
+	
+	The key of a feature is its column index in the original NOAA files : the indexes of the preselected weather features where stored in the parameter \emph{subset}.
+	
+	\section{Data processing}
+	The raw data is not straight away usable.
+	
+	\begin{itemize}
+		\item [-] feature values are missing for some examples : we replace them by mean values. It just adds some noise to the data ;
+		\item [-] the value of the feature \emph{Sky Condition} is a String : we need to convert it to a numeric value.
+	\end{itemize}
+
+	The corresponding processed feature is called \emph{Cloud coverage} and is in \%, of the sky which is covered by clouds.\\
+	
+	A problem was that the resolution of measures were not coherent between the weather station : some of them had an hour resolution, some of them half an hour, and some of them didn't even have a regular resolution. Thus, the first step was to average the measures over an hour.\\
+	
+	Then we need to spatially average every weather feature over the 3 closest weather station. We used the formula of the barycenter to take the distance of each station into account.\\
+	
+	For a specific (at a given hour, day, month, year) feature $x_j$, the average value is :
+	\[x_j = \frac{d_A x_{j,A} + d_B x_{j,B} + d_C x_{j,C}}{d_A + d_B + d_C}\]
+	
+	Where :
+	\[ \left\{
+	\begin{array}{r c l}
+		d_A &:& \text{ the distance from weather station A to Stanford}\\
+		x_{j,A} &:& \text{ the value of feature $x_j$ measured by weather station A}\\
+	\end{array}
+	\right. \]
+	
+	With this formula : the closest a weather station is, the more weight it has.
+	
+	Finally, after this data-cleaning process, we are left with 1 dataset example per hour per day for the 2008/12/21-2010/2/10 period.
+	\[m = (365+52)*24\]
+	
+	We have \emph{m = 10 008} examples.
+\end{document}          
