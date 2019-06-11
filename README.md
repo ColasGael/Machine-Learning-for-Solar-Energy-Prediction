@@ -1,9 +1,7 @@
 # Machine-Learning-for-Solar-Energy-Prediction
 by Adele Kuzmiakova, Gael Colas and Alex McKeehan, graduate students from Stanford University
 
-This is our final project for the CS229: "Machine Learning" class in Stanford (2017). 
-
-Our teachers were Pr. Andrew Ng and Pr. Dan Boneh.
+This is our final project for the CS229: "Machine Learning" class in Stanford (2017). Our teachers were Pr. Andrew Ng and Pr. Dan Boneh.
 
 Language: Python, Matlab, R
 
