@@ -25,6 +25,8 @@ import csv
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 
+DATASET_PATH = "../Datasets/hourly/"
+
 #Set y values of data to lie between 0 and 1
 def normalize_data(dataset, data_min, data_max):
     data_std = (dataset - data_min) / (data_max - data_min)
@@ -76,12 +78,12 @@ def import_data(train_dataframe, dev_dataframe, test_dataframe):
     return train_data, train_labels, dev_data, dev_labels, test_data, test_labels, scale_factor
 
 #Construt and return Keras RNN model
-def build_model(init_type='glorot_uniform', optimizer='adam'):
+def build_model(init_type = 'glorot_uniform', optimizer = 'adam', num_features = 12):
     model = Sequential()
-    layers = [12, 64, 64, 1, 1]
+    layers = [num_features, 64, 64, 1, 1]
     model.add(keras.layers.LSTM(
         layers[0],
-        input_shape = (None,12),
+        input_shape = (None, num_features),
         return_sequences=True))
     model.add(keras.layers.Dropout(0.2))
 
@@ -96,7 +98,7 @@ def build_model(init_type='glorot_uniform', optimizer='adam'):
     model.add(Dense(
         layers[2], activation='tanh',
         kernel_initializer=init_type,
-        input_shape = (None,1)
+        input_shape = (None, 1)
         ))
     model.add(Dense(
         layers[3]))
@@ -141,23 +143,27 @@ def main():
     plt.switch_backend('tkAgg')
 
     #Import test data (6027, 13)
-    train_dataframe = pandas.read_csv('weather_train.csv', sep=";", engine='python', header = None)
-    dev_dataframe = pandas.read_csv('weather_dev.csv', sep=";", engine='python', header = None)
-    test_dataframe = pandas.read_csv('weather_test.csv', sep=";", engine='python', header = None)
+    train_dataframe = pandas.read_csv(DATASET_PATH + 'weather_train.csv', sep=";", engine='python', header = None)
+    dev_dataframe = pandas.read_csv(DATASET_PATH + 'weather_dev.csv', sep=";", engine='python', header = None)
+    test_dataframe = pandas.read_csv(DATASET_PATH + 'weather_test.csv', sep=";", engine='python', header = None)
     train_data, train_labels, dev_data, dev_labels, test_data, test_labels, scale_factor = import_data(train_dataframe, dev_dataframe, test_dataframe)
 
-    X_train = np.reshape(train_data, (train_data.shape[0], 1, train_data.shape[1]))
-    X_dev = np.reshape(dev_data, (dev_data.shape[0], 1, dev_data.shape[1]))
-    X_test = np.reshape(test_data, (test_data.shape[0], 1, test_data.shape[1]))
-    Y_train = np.reshape(train_labels, (train_labels.shape[0], 1, 1))
-    Y_dev = np.reshape(dev_labels, (dev_labels.shape[0], 1, 1))
-    Y_test = np.reshape(test_labels, (test_labels.shape[0], 1, 1))
+
+    time_steps = 1
+    assert(train_data.shape[0] % time_steps == 0)
+
+    X_train = np.reshape(train_data, (train_data.shape[0] // time_steps, time_steps, train_data.shape[1]))
+    X_dev = np.reshape(dev_data, (dev_data.shape[0] // time_steps, time_steps, dev_data.shape[1]))
+    X_test = np.reshape(test_data, (test_data.shape[0] // time_steps, time_steps, test_data.shape[1]))
+    Y_train = np.reshape(train_labels, (train_labels.shape[0] // time_steps, time_steps, 1))
+    Y_dev = np.reshape(dev_labels, (dev_labels.shape[0] // time_steps, time_steps, 1))
+    Y_test = np.reshape(test_labels, (test_labels.shape[0] // time_steps, time_steps, 1))
 
     model = build_model('glorot_uniform', 'adam')
 
     #Standard vanilla LSTM model
 
-    model_fit_epochs = 100
+    model_fit_epochs = 1
     print("X_train shape: ",X_train.shape, " Y_train shape: ",Y_train.shape)
 
     model.fit(
