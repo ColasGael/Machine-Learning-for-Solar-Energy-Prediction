@@ -163,7 +163,7 @@ def main():
 
     #Standard vanilla LSTM model
 
-    model_fit_epochs = 1
+    model_fit_epochs = 100
     print("X_train shape: ",X_train.shape, " Y_train shape: ",Y_train.shape)
 
     model.fit(
