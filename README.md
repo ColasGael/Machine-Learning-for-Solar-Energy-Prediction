@@ -1,15 +1,39 @@
 # Machine-Learning-for-Solar-Energy-Prediction
-by Adele Kuzmiakova, Gael Colas and Alex McKeehan, graduate students from Stanford University
 
-This is our final project for the CS229: "Machine Learning" class in Stanford (2017). Our teachers were Pr. Andrew Ng and Pr. Dan Boneh.
+### Project Overview
+A machine learning project for predicting solar panel farm power production based on weather data. Developed to explore ML techniques like PCA, neural networks, and boosting. The goal of the project is to predict the hourly power production of a photovoltaic power station from the measurements of a set of weather features.
 
-Language: Python, Matlab, R
+### Features
+- Weather and power data preprocessing  
+- Feature engineering (correlation analysis, PCA)  
+- Model comparisons (linear regression, boosting, neural networks)  
+- Multi-language support: Python, R, MATLAB  
 
-Goal: predict the hourly power production of a photovoltaic power station from the measurements of a set of weather features. 
+### Changelog
+- **v1.0**: Initial release with model and report files.
 
-This project could be decomposed in 3 parts:
-  - Data Pre-processing: we processed the raw weather data files (input) from the National Oceanographic and Atmospheric Administration and the power production data files (output) from Urbana-Champaign solar farm to get meaningful numeric values on an hourly basis ;
-  - Feature Selection: we run correlation analysis between the weather features and the energy output to discard useless features, we also implemented Principal Component Analysis to reduce the dimension of our dataset ;
-  - Machine Learning : we compared the performances of our ML algorithms. Implemented models include Weighted Linear Regression with and without dimension reduction, Boosting Regression Trees, and artificial Neural Networks with and without vanishing temporal gradient
+### Installation Instructions
+1. Clone this repo: `git clone <repo_link>`  
+2. Install required libraries: `pip install -r requirements.txt`  
 
-Our final report and poster are available at the root.
+### Usage Guide
+- Preprocess datasets via the scripts in `/Data Processing`.
+- Perform dimensions reduction via the script `/Principal Component Analysis`   
+- Train models using `/Random Forest`, `/Recurrent Neural Networks`.  
+ 
+### License
+[MIT License](https://github.com/ColasGael/Machine-Learning-for-Solar-Energy-Prediction/blob/master/LICENSE)
+
+### Code of Conduct
+Code of Conduct sets the standards for how we interact with each other. It is important to maintain a respectful and inclusive environment in order to nourish cooperation. You can read the full document [here](https://github.com/Moosa-Anwar-Khan/Machine-Learning-for-Solar-Energy-Prediction/blob/master/CONDUCT.md)
+
+### Contribution Guidelines
+1. Fork the repo.  
+2. Create feature branches.  
+3. Submit a pull request.  
+
+### Acknowledgments
+The following individuals from Stanford University have contributed to the success of this project:
+- Adele Kuzmiakova
+- Gael Colas 
+- Alex McKeehan  

@@ -1,0 +1,21 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Machine-Learning-For-Solar-Energy-Prediction
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Adele
+    family-names: Kuzmiakova
+    affiliation: Stanford University
+  - family-names: Colas
+    given-names: Gael
+    affiliation: Stanford University
+  - given-names: Alex
+    family-names: McKeehan
+    affiliation: Stanford University
+repository-code: 'https://github.com/ColasGael/Machine-Learning-for-Solar-Energy-Prediction'
+license: MIT License

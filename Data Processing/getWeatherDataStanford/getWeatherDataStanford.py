@@ -22,7 +22,7 @@ if __name__ == '__main__':
     preferredDistKm = 15
     
     # returns the details for the n closest stations to zip5
-    statList = wd.stationList(zip5,2009,01,n,preferredDistKm)
+    statList = wd.stationList(zip5,2009,1,n,preferredDistKm)
     print(statList)
     
     # store in a list the weather data wanted
