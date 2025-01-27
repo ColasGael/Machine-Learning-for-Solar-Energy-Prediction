@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: Machine Learning for Solar Energy Prediction
+authors:
+  - family-names: Abdullah
+    given-names: Saad
+license: MIT
+version: 1.0.0
+url: https://github.com/saadabdullah-15/Machine-Learning-for-Solar-Energy-Prediction
+doi: 10.1234/solar.prediction.example
+date-released: 2025-01-27
